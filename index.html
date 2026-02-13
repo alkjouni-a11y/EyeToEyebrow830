@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Questionnaire</title>
+    <script>
+        function handleQ3Response(response) {
+            const rejectionButton = document.getElementById('rejectionButton');
+            const tryAgainButton = document.getElementById('tryAgainButton');
+            const message = document.getElementById('message');
+
+            if (response === 'yes') {
+                rejectionButton.style.display = 'block';
+                message.innerText = '';
+            } else if (response === 'no') {
+                tryAgainButton.style.display = 'block';
+                message.innerText = '';
+            }
+        }
+
+        function showMessage() {
+            const message = document.getElementById('message');
+            message.innerText = 'You have no choice, you are my valentine! ❤️😍';
+        }
+    </script>
+</head>
+<body>
+    <h1>Romantic Questionnaire</h1>
+    <p>Question 3: Do you love me? <button onclick="handleQ3Response('yes')">Yes</button> <button onclick="handleQ3Response('no')">No</button></p>
+    <button id="rejectionButton" style="display:none;" onclick="showMessage()">Reject</button>
+    <button id="tryAgainButton" style="display:none;">Try Again</button>
+    <p id="message"></p>
+</body>
+</html>
