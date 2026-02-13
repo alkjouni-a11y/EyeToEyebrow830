@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question for You 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff0000 0%, #9dc183 100%);
+            transition: background 2s ease-in-out;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .emoji-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-no {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .btn-no:hover {
+            background-color: #ff5252;
+            transform: scale(1.05);
+        }
+
+        .btn-yes {
+            background-color: #51cf66;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background-color: #40c057;
+            transform: scale(1.05);
+        }
+
+        .btn-try-again {
+            background-color: #ffd43b;
+            color: #333;
+        }
+
+        .btn-try-again:hover {
+            background-color: #ffb700;
+            transform: scale(1.05);
+        }
+
+        .btn-rejection {
+            background-color: #ff6b6b;
+            color: white;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        .btn-rejection:hover {
+            background-color: #ff5252;
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .message-text {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .floating-emojis {
+            font-size: 3rem;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="emoji-container" id="emojiContainer"></div>
+    
+    <div class="container">
+        <!-- Question 1: Do you know my name? -->
+        <div id="question1" class="question">
+            <div class="question-title">
+                Hi Sarah! 💕 Do you know my name?
+            </div>
+            <div class="buttons-container">
+                <button class="btn-no" onclick="goToQuestion2()">No</button>
+                <button class="btn-no" onclick="goToQuestion2()">No</button>
+            </div>
+        </div>
+
+        <!-- Question 2: Will you admit we were talking for 3 weeks? -->
+        <div id="question2" class="question hidden">
+            <div class="question-title">
+                Will you ever admit that we were talking for those 3 weeks and that we started talking on 07/09/2026? 💕
+            </div>
+            <div class="buttons-container">
+                <button class="btn-yes" onclick="goToQuestion3()">Yes</button>
+                <button class="btn-no" onclick="repeatQuestion2()">No</button>
+            </div>
+        </div>
+
+        <!-- Question 3: Will you be my annoying valentine? -->
+        <div id="question3" class="question hidden">
+            <div class="question-title">
+                Okay wanna be my annoying valentine? Through thick and thin? Matcha and peas? 💕
+            </div>
+            <div class="buttons-container">
+                <button class="btn-yes" onclick="showRejectionButton()">Yes</button>
+                <button class="btn-no" onclick="showTryAgain()">No</button>
+            </div>
+        </div>
+
+        <!-- Rejection Button State -->
+        <div id="rejectionButton" class="question hidden">
+            <div class="question-title">
+                Okay wanna be my annoying valentine? Through thick and thin? Matcha and peas? 💕
+            </div>
+            <div class="buttons-container">
+                <button class="btn-rejection" onclick="showFinalMessage()">Rejection</button>
+                <button class="btn-no" onclick="showTryAgain()">No</button>
+            </div>
+        </div>
+
+        <!-- Final Message: You have no choice -->
+        <div id="finalMessage" class="question hidden">
+            <div class="floating-emojis">🐻 ❤️ 🌻 🐻 ❤️ 🌻</div>
+            <div class="question-title message-text">
+                You have no choice you are my valentine 💕
+            </div>
+            <div class="floating-emojis">🐻 ❤️ 🌻 🐻 ❤️ 🌻</div>
+        </div>
+
+        <!-- Try Again -->
+        <div id="tryAgain" class="question hidden">
+            <div class="question-title">
+                Okay wanna be my annoying valentine? Through thick and thin? Matcha and peas? 💕
+            </div>
+            <div class="buttons-container">
+                <button class="btn-try-again" onclick="goToQuestion3()">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Populate emojis across the background
+        function populateEmojis() {
+            const container = document.getElementById('emojiContainer');
+            const emojis = ['🐻', '❤️', '🌻'];
+            const positions = [];
+
+            for (let i = 0; i < 30; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                emoji.style.left = x + '%';
+                emoji.style.top = y + '%';
+                emoji.style.animationDelay = (i * 0.2) + 's';
+                
+                container.appendChild(emoji);
+            }
+        }
+
+        // Change background color progressively
+        function updateBackground() {
+            const body = document.body;
+            body.style.background = 'linear-gradient(135deg, #9dc183 0%, #9dc183 100%)';
+        }
+
+        // Navigation functions
+        function goToQuestion2() {
+            showQuestion('question2');
+        }
+
+        function repeatQuestion2() {
+            // Stays on question 2, no navigation
+        }
+
+        function goToQuestion3() {
+            showQuestion('question3');
+            updateBackground();
+        }
+
+        function showRejectionButton() {
+            showQuestion('rejectionButton');
+        }
+
+        function showTryAgain() {
+            showQuestion('tryAgain');
+        }
+
+        function showFinalMessage() {
+            showQuestion('finalMessage');
+            updateBackground();
+            // Add extra emojis for celebration
+            addCelebrationEmojis();
+        }
+
+        function showQuestion(questionId) {
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(q => q.classList.add('hidden'));
+            document.getElementById(questionId).classList.remove('hidden');
+        }
+
+        function addCelebrationEmojis() {
+            const container = document.getElementById('emojiContainer');
+            const emojis = ['🐻', '❤️', '🌻'];
+            
+            for (let i = 0; i < 20; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                emoji.style.left = x + '%';
+                emoji.style.top = y + '%';
+                emoji.style.animationDelay = (i * 0.1) + 's';
+                emoji.style.fontSize = '3rem';
+                
+                container.appendChild(emoji);
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            populateEmojis();
+        };
+    </script>
+</body>
+</html>
